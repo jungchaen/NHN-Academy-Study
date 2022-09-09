@@ -4,10 +4,15 @@ import java.util.Map;
 public class Login {
     boolean isFindMember;
 
+    boolean successLogin;
     Map<String, Member> userMap;
 
     public Login(Map<String, Member> userMap) {
         this.userMap = userMap;
+    }
+
+    public boolean getSuccessLogin() {
+        return successLogin;
     }
 
     public void matchLoginIdPW(String id, String pw) throws NullPointerException {
@@ -22,10 +27,10 @@ public class Login {
         if (isFindMember) {
             System.out.println("로그인 되었습니다.");
             printUserData(userMap);
+            successLogin = true;
         } else {
             throw new NullPointerException();
         }
-
     }
 
     public void printUserData(Map<String, Member> userMap) {
@@ -35,5 +40,25 @@ public class Login {
             System.out.println("email: " + member.getEmail());
             System.out.println("핸드폰 번호: " + member.getPhoneNumber());
         }
+    }
+
+    public void logOut() {
+        System.out.println("로그아웃 되었습니다.");
+    }
+
+    public boolean withdrawalCheckPw(String pw) {
+        Collection<Member> members = userMap.values();
+        for (Member member : members) {
+            if (member.getPw().equals(pw)) {
+                userMap.values().remove(member);
+                System.out.println("회원탈퇴 되었습니다.");
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Map<String, Member> getUserMap() {
+        return this.userMap;
     }
 }

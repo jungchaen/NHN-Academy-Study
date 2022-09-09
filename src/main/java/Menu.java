@@ -6,13 +6,12 @@ public class Menu {
     SignUp signUp;
     Login login;
 
-    public void runMemberMenuChoice() throws IOException {
+    public void runMemberMenu() throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         int menuNumber;
-        boolean checkChoiceNumber = true;
 
-        while (checkChoiceNumber) {
+        while (true) {
             System.out.println("\n<메인화면>");
             System.out.println("1. 로그인");
             System.out.println("2. 회원가입");
@@ -58,7 +57,14 @@ public class Menu {
                     String pw = br.readLine();
                     try {
                         login.matchLoginIdPW(id, pw);
-                    } catch (NullPointerException e) {
+                        if (login.getSuccessLogin()) {
+                            try {
+                                checkChoiceLoginNumber = afterLoginMenu();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    } catch (Exception e) {
                         System.out.println("로그인 실패하였습니다.");
                     }
                     break;
@@ -69,5 +75,33 @@ public class Menu {
                     break;
             }
         }
+    }
+
+    public boolean afterLoginMenu() throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("\n1. 로그아웃");
+        System.out.println("2. 회원탈퇴");
+        System.out.print("번호를 선택하세요: ");
+        int choiceAfterLogin = Integer.parseInt(br.readLine());
+        if (choiceAfterLogin == 1) {
+            login.logOut();
+            return false;
+        }
+        if (choiceAfterLogin == 2) {  //회원 탈퇴
+            System.out.print("회원탈퇴 하시겠습니까?(y 또는 n 입력): ");
+            String withdrawal = br.readLine();
+            if (withdrawal.equals("y")) {
+                System.out.print("비밀번호를 입력하세요: ");
+                String pw = br.readLine();
+                if (login.withdrawalCheckPw(pw)) {
+                    return false;
+                } else {
+                    throw new Exception();
+                }
+            } else {
+                return false;
+            }
+        }
+        return true;
     }
 }
