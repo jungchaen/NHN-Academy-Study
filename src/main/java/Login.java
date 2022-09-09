@@ -2,7 +2,8 @@ import java.util.Collection;
 import java.util.Map;
 
 public class Login {
-    boolean isFindMember;
+    boolean isFindPw;
+    boolean isFindId;
 
     Map<String, Member> userMap;
 
@@ -13,13 +14,17 @@ public class Login {
     public void matchLoginIdPW(String id, String pw) throws NullPointerException {
         Collection<Member> members = userMap.values(); //저장된 value값들을 반환
         for (Member member : members) {
-            if (member.getId().equals(id) && member.getPw().equals(pw)) {
-                isFindMember = true;
+            if (member.getId().equals(id)) {
+                isFindId = true;
+                break;
+            }
+            if (member.getPw().equals(pw)) {
+                isFindPw = true;
                 break;
             }
         }
 
-        if (isFindMember) {
+        if (isFindId && isFindPw) {
             System.out.println("로그인 되었습니다.");
             printUserData(userMap);
         } else {
@@ -31,9 +36,9 @@ public class Login {
     public void printUserData(Map<String, Member> userMap) {
         Collection<Member> members = userMap.values();
         for (Member member : members) {
-            System.out.println("이름: " + member.getUserName());
-            System.out.println("email: " + member.getEmail());
-            System.out.println("핸드폰 번호: " + member.getPhoneNumber());
+            System.out.println(member.getUserName());
+            System.out.println(member.getEmail());
+            System.out.println(member.getPhoneNumber());
         }
     }
 }
