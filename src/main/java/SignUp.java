@@ -37,7 +37,7 @@ public class SignUp {
         }
 
         /* 이름 */
-        System.out.print("성명: ");
+        System.out.print("이름: ");
         String name = scanner.nextLine();
 
         /* 이메일 체크 */
